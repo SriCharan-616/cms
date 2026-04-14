@@ -1,0 +1,587 @@
+/* ============================================================
+   Conference Management System - Custom Stylesheet
+   Font: Sora (headings) + DM Sans (body)
+   Theme: Deep Navy + Electric Teal accent
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+:root {
+  --navy:       #0a0f2c;
+  --navy-mid:   #111736;
+  --navy-card:  #161d3f;
+  --teal:       #00d4b4;
+  --teal-dark:  #00b89c;
+  --teal-glow:  rgba(0, 212, 180, 0.15);
+  --coral:      #ff6b6b;
+  --gold:       #ffd166;
+  --text-main:  #e8eaf6;
+  --text-muted: #8892b0;
+  --border:     rgba(0, 212, 180, 0.18);
+  --shadow-sm:  0 2px 12px rgba(0,0,0,0.3);
+  --shadow-md:  0 8px 32px rgba(0,0,0,0.4);
+  --radius:     12px;
+  --radius-lg:  20px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--navy);
+  color: var(--text-main);
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.65;
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+}
+
+h1 { font-size: clamp(1.8rem, 4vw, 2.8rem); }
+h2 { font-size: clamp(1.4rem, 3vw, 2rem); }
+h3 { font-size: 1.25rem; }
+
+a { color: var(--teal); text-decoration: none; transition: opacity 0.2s; }
+a:hover { opacity: 0.8; }
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+
+.navbar {
+  background: rgba(10, 15, 44, 0.95) !important;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0.75rem 0;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.navbar-brand {
+  font-family: 'Sora', sans-serif;
+  font-weight: 800;
+  font-size: 1.3rem;
+  color: var(--teal) !important;
+  letter-spacing: -0.03em;
+}
+
+.navbar-brand span {
+  color: var(--text-main);
+}
+
+.nav-link {
+  color: var(--text-muted) !important;
+  font-weight: 500;
+  transition: color 0.2s;
+  padding: 0.4rem 0.9rem !important;
+  border-radius: 8px;
+}
+
+.nav-link:hover, .nav-link.active {
+  color: var(--teal) !important;
+  background: var(--teal-glow);
+}
+
+.navbar-toggler {
+  border-color: var(--border) !important;
+}
+
+/* ============================================================
+   LAYOUT / PAGE WRAPPER
+   ============================================================ */
+
+.page-wrapper {
+  padding: 2.5rem 0 4rem;
+  min-height: calc(100vh - 64px);
+}
+
+.section-header {
+  margin-bottom: 2rem;
+}
+
+.section-header h1 {
+  background: linear-gradient(135deg, var(--text-main) 0%, var(--teal) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 0.4rem;
+}
+
+.section-header p {
+  color: var(--text-muted);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+
+.cms-card {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem;
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+}
+
+.cms-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(0, 212, 180, 0.35);
+}
+
+.cms-card .card-title {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--text-main);
+  margin-bottom: 0.5rem;
+}
+
+.cms-card .card-meta {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.35rem;
+}
+
+.cms-card .card-meta i {
+  color: var(--teal);
+  width: 16px;
+}
+
+.conference-fee {
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+/* ============================================================
+   STAT CARDS (Dashboard)
+   ============================================================ */
+
+.stat-card {
+  background: linear-gradient(135deg, var(--navy-mid), var(--navy-card));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.stat-card::before {
+  content: '';
+  position: absolute;
+  top: -40%;
+  right: -20%;
+  width: 120px;
+  height: 120px;
+  background: var(--teal-glow);
+  border-radius: 50%;
+  filter: blur(30px);
+}
+
+.stat-card .stat-number {
+  font-family: 'Sora', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--teal);
+  line-height: 1;
+}
+
+.stat-card .stat-label {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+  font-weight: 500;
+}
+
+.stat-card .stat-icon {
+  font-size: 2rem;
+  margin-bottom: 0.75rem;
+  opacity: 0.7;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+
+.btn-primary, .btn-cms-primary {
+  background: var(--teal) !important;
+  border: none !important;
+  color: var(--navy) !important;
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 600;
+  padding: 0.55rem 1.4rem;
+  border-radius: 8px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.btn-primary:hover, .btn-cms-primary:hover {
+  background: var(--teal-dark) !important;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(0, 212, 180, 0.3);
+}
+
+.btn-outline-cms {
+  background: transparent;
+  border: 1.5px solid var(--teal);
+  color: var(--teal);
+  font-weight: 600;
+  padding: 0.5rem 1.3rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+}
+
+.btn-outline-cms:hover {
+  background: var(--teal-glow);
+  color: var(--teal);
+  text-decoration: none;
+}
+
+.btn-danger-cms {
+  background: transparent;
+  border: 1.5px solid var(--coral);
+  color: var(--coral);
+  font-weight: 600;
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.btn-danger-cms:hover {
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.btn-sm-cms {
+  padding: 0.3rem 0.85rem;
+  font-size: 0.82rem;
+  border-radius: 6px;
+}
+
+/* ============================================================
+   FORMS
+   ============================================================ */
+
+.cms-form-wrapper {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.25rem 2.5rem;
+  box-shadow: var(--shadow-md);
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+.cms-form-wrapper.wide {
+  max-width: 680px;
+}
+
+.form-label {
+  color: var(--text-muted);
+  font-weight: 500;
+  font-size: 0.85rem;
+  margin-bottom: 0.4rem;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.form-control, .form-select {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.1) !important;
+  color: var(--text-main) !important;
+  border-radius: 8px !important;
+  padding: 0.65rem 0.95rem !important;
+  font-size: 0.95rem !important;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: var(--teal) !important;
+  box-shadow: 0 0 0 3px var(--teal-glow) !important;
+  outline: none !important;
+}
+
+.form-control::placeholder { color: var(--text-muted) !important; opacity: 0.7; }
+
+textarea.form-control { resize: vertical; min-height: 100px; }
+
+/* ============================================================
+   AUTH PAGES
+   ============================================================ */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse at 20% 50%, rgba(0,212,180,0.06) 0%, transparent 60%),
+              radial-gradient(ellipse at 80% 20%, rgba(0,100,255,0.05) 0%, transparent 50%),
+              var(--navy);
+}
+
+.auth-logo {
+  font-family: 'Sora', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--teal);
+  text-align: center;
+  margin-bottom: 0.25rem;
+}
+
+.auth-tagline {
+  color: var(--text-muted);
+  text-align: center;
+  font-size: 0.9rem;
+  margin-bottom: 1.75rem;
+}
+
+/* ============================================================
+   BADGES / STATUS PILLS
+   ============================================================ */
+
+.badge-status {
+  display: inline-block;
+  padding: 0.28rem 0.75rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.03em;
+}
+
+.badge-pending  { background: rgba(255,209,102,0.15); color: var(--gold);  border: 1px solid rgba(255,209,102,0.3); }
+.badge-approved { background: rgba(0,212,180,0.12);  color: var(--teal);  border: 1px solid rgba(0,212,180,0.3);  }
+.badge-rejected { background: rgba(255,107,107,0.12); color: var(--coral); border: 1px solid rgba(255,107,107,0.3); }
+.badge-confirmed{ background: rgba(0,212,180,0.12);  color: var(--teal);  border: 1px solid rgba(0,212,180,0.3);  }
+.badge-user     { background: rgba(136,146,176,0.15); color: var(--text-muted); border: 1px solid rgba(136,146,176,0.25); }
+.badge-organizer{ background: rgba(0,100,255,0.12);  color: #7eb6ff; border: 1px solid rgba(0,100,255,0.25); }
+.badge-admin    { background: rgba(255,107,107,0.12); color: var(--coral); border: 1px solid rgba(255,107,107,0.3); }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+
+.cms-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+}
+
+.cms-table thead th {
+  font-family: 'Sora', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.cms-table tbody tr {
+  background: var(--navy-card);
+  border-radius: var(--radius);
+  transition: background 0.2s;
+}
+
+.cms-table tbody tr:hover {
+  background: rgba(22, 29, 63, 0.9);
+}
+
+.cms-table tbody td {
+  padding: 0.85rem 1rem;
+  vertical-align: middle;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  font-size: 0.9rem;
+}
+
+.cms-table tbody td:first-child { border-left: 1px solid var(--border); border-radius: var(--radius) 0 0 var(--radius); }
+.cms-table tbody td:last-child  { border-right: 1px solid var(--border); border-radius: 0 var(--radius) var(--radius) 0; }
+
+/* ============================================================
+   ALERTS
+   ============================================================ */
+
+.alert-cms {
+  border-radius: 10px;
+  border: none;
+  padding: 0.85rem 1.2rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.alert-success-cms {
+  background: rgba(0,212,180,0.12);
+  color: var(--teal);
+  border-left: 3px solid var(--teal);
+}
+
+.alert-error-cms {
+  background: rgba(255,107,107,0.12);
+  color: var(--coral);
+  border-left: 3px solid var(--coral);
+}
+
+/* ============================================================
+   SEARCH BAR
+   ============================================================ */
+
+.search-bar {
+  position: relative;
+}
+
+.search-bar .form-control {
+  padding-left: 2.75rem !important;
+}
+
+.search-bar .search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  opacity: 0.4;
+}
+
+.empty-state h3 {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/* ============================================================
+   CONFERENCE DETAIL HERO
+   ============================================================ */
+
+.conf-hero {
+  background: linear-gradient(135deg, var(--navy-mid), var(--navy-card));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.conf-hero::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 220px; height: 220px;
+  background: var(--teal-glow);
+  border-radius: 50%;
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.conf-hero h1 {
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  margin-bottom: 1rem;
+}
+
+.conf-meta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.conf-meta-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+}
+
+.conf-meta-item i { color: var(--teal); }
+
+/* ============================================================
+   SIDEBAR / INFO PANEL
+   ============================================================ */
+
+.info-panel {
+  background: var(--navy-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+}
+
+.info-panel h4 {
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+}
+
+/* ============================================================
+   SCROLLBAR
+   ============================================================ */
+
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy); }
+::-webkit-scrollbar-thumb { background: var(--navy-card); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--border); }
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 768px) {
+  .cms-form-wrapper { padding: 1.5rem; }
+  .conf-hero { padding: 1.5rem; }
+  .cms-table { font-size: 0.82rem; }
+}
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.fade-up { animation: fadeUp 0.45s ease both; }
+.fade-up-1 { animation-delay: 0.05s; }
+.fade-up-2 { animation-delay: 0.12s; }
+.fade-up-3 { animation-delay: 0.19s; }
+.fade-up-4 { animation-delay: 0.26s; }

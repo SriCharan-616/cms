@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+
+<!-- ============================================================
+     SHARED NAVBAR FRAGMENT
+     Usage: <div th:replace="~{fragments/navbar :: navbar(${user})}"></div>
+     ============================================================ -->
+
+<nav th:fragment="navbar(user)" class="navbar navbar-expand-lg">
+  <div class="container">
+
+    <a class="navbar-brand" th:href="@{/dashboard}">
+      ⬡ <span>Conference</span>MS
+    </a>
+
+    <button class="navbar-toggler" type="button"
+            data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav me-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/dashboard}">
+            <i class="fa-solid fa-house-chimney me-1"></i>Dashboard
+          </a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" th:href="@{/conferences}">
+            <i class="fa-solid fa-calendar-days me-1"></i>Conferences
+          </a>
+        </li>
+
+        <!-- USER links -->
+        <li class="nav-item" th:if="${user != null and user.role.name() == 'USER'}">
+          <a class="nav-link" th:href="@{/my-registrations}">
+            <i class="fa-solid fa-ticket me-1"></i>My Registrations
+          </a>
+        </li>
+
+        <li class="nav-item" th:if="${user != null and user.role.name() == 'USER'}">
+          <a class="nav-link" th:href="@{/submit-paper}">
+            <i class="fa-solid fa-file-arrow-up me-1"></i>Submit Paper
+          </a>
+        </li>
+
+        <!-- ORGANIZER links -->
+        <li class="nav-item" th:if="${user != null and user.role.name() == 'ORGANIZER'}">
+          <a class="nav-link" th:href="@{/organizer/conferences/new}">
+            <i class="fa-solid fa-plus me-1"></i>New Conference
+          </a>
+        </li>
+
+        <!-- ADMIN links -->
+        <li class="nav-item" th:if="${user != null and user.role.name() == 'ADMIN'}">
+          <a class="nav-link" th:href="@{/admin}">
+            <i class="fa-solid fa-shield-halved me-1"></i>Admin Panel
+          </a>
+        </li>
+
+      </ul>
+
+      <!-- User info + logout -->
+      <ul class="navbar-nav align-items-center" th:if="${user != null}">
+        <li class="nav-item me-2">
+          <span th:class="'badge-status badge-' + ${user.role.name().toLowerCase()}"
+                th:text="${user.role.name()}"></span>
+        </li>
+        <li class="nav-item me-2" style="color: var(--text-muted); font-size:0.88rem;">
+          <i class="fa-regular fa-user me-1"></i>
+          <span th:text="${user.name}"></span>
+        </li>
+        <li class="nav-item">
+          <a th:href="@{/logout}" class="btn-danger-cms btn-sm-cms">
+            <i class="fa-solid fa-right-from-bracket me-1"></i>Logout
+          </a>
+        </li>
+      </ul>
+
+    </div>
+  </div>
+</nav>
+
+</body>
+</html>
