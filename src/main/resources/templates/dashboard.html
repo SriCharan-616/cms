@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard – CMS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar(${user})}"></div>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <!-- Flash messages -->
+    <div th:if="${success}" class="alert-cms alert-success-cms mb-4" th:text="${success}"></div>
+    <div th:if="${error}"   class="alert-cms alert-error-cms mb-4"   th:text="${error}"></div>
+
+    <!-- Section header -->
+    <div class="section-header fade-up">
+      <h1>Welcome back, <span th:text="${user.name}">User</span> 👋</h1>
+      <p>Here's what's happening on your account.</p>
+    </div>
+
+    <!-- ============================
+         USER DASHBOARD
+         ============================ -->
+    <div th:if="${user.role.name() == 'USER'}">
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 fade-up fade-up-1">
+          <div class="stat-card">
+            <div class="stat-icon">🎟️</div>
+            <div class="stat-number" th:text="${registrations != null ? registrations.size() : 0}">0</div>
+            <div class="stat-label">Registrations</div>
+          </div>
+        </div>
+        <div class="col-6 col-md-3 fade-up fade-up-2">
+          <div class="stat-card">
+            <div class="stat-icon">📄</div>
+            <div class="stat-number" th:text="${submissions != null ? submissions.size() : 0}">0</div>
+            <div class="stat-label">Submissions</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Actions -->
+      <div class="cms-card mb-4 fade-up fade-up-3">
+        <h3 class="mb-3" style="font-size:1rem; color: var(--text-muted); text-transform:uppercase; letter-spacing:0.06em;">Quick Actions</h3>
+        <div class="d-flex flex-wrap gap-2">
+          <a th:href="@{/conferences}" class="btn-outline-cms">
+            <i class="fa-solid fa-magnifying-glass me-1"></i>Browse Conferences
+          </a>
+          <a th:href="@{/my-registrations}" class="btn-outline-cms">
+            <i class="fa-solid fa-ticket me-1"></i>My Registrations
+          </a>
+          <a th:href="@{/submit-paper}" class="btn-outline-cms">
+            <i class="fa-solid fa-file-arrow-up me-1"></i>Submit a Paper
+          </a>
+        </div>
+      </div>
+
+      <!-- Recent Submissions -->
+      <div class="cms-card fade-up fade-up-4" th:if="${submissions != null and !submissions.isEmpty()}">
+        <h3 class="mb-3">Recent Submissions</h3>
+        <table class="cms-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Conference</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="sub : ${submissions}">
+              <td th:text="${sub.title}">Paper Title</td>
+              <td th:text="${sub.conference.title}">Conference</td>
+              <td>
+                <span th:class="'badge-status badge-' + ${sub.status.name().toLowerCase()}"
+                      th:text="${sub.status.name()}">PENDING</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ============================
+         ORGANIZER DASHBOARD
+         ============================ -->
+    <div th:if="${user.role.name() == 'ORGANIZER'}">
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3 fade-up fade-up-1">
+          <div class="stat-card">
+            <div class="stat-icon">🏛️</div>
+            <div class="stat-number" th:text="${myConferences != null ? myConferences.size() : 0}">0</div>
+            <div class="stat-label">My Conferences</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="d-flex justify-content-between align-items-center mb-3 fade-up fade-up-2">
+        <h2>My Conferences</h2>
+        <a th:href="@{/organizer/conferences/new}" class="btn-primary px-4 py-2 rounded-2">
+          <i class="fa-solid fa-plus me-1"></i>New Conference
+        </a>
+      </div>
+
+      <div class="row g-3" th:if="${myConferences != null and !myConferences.isEmpty()}">
+        <div class="col-md-6 col-lg-4 fade-up" th:each="conf, stat : ${myConferences}"
+             th:style="'animation-delay:' + ${stat.index * 0.08} + 's'">
+          <div class="cms-card h-100">
+            <div class="card-title" th:text="${conf.title}">Title</div>
+            <div class="card-meta">
+              <i class="fa-regular fa-calendar"></i>
+              <span th:text="${conf.date}">Date</span>
+            </div>
+            <div class="card-meta">
+              <i class="fa-solid fa-location-dot"></i>
+              <span th:text="${conf.location}">Location</span>
+            </div>
+            <div class="d-flex gap-2 mt-3 flex-wrap">
+              <a th:href="@{'/organizer/conferences/' + ${conf.id} + '/registrations'}" class="btn-outline-cms btn-sm-cms">
+                <i class="fa-solid fa-users me-1"></i>Attendees
+              </a>
+              <a th:href="@{'/organizer/conferences/' + ${conf.id} + '/submissions'}" class="btn-outline-cms btn-sm-cms">
+                <i class="fa-solid fa-file-lines me-1"></i>Papers
+              </a>
+              <a th:href="@{'/organizer/conferences/' + ${conf.id} + '/edit'}" class="btn-outline-cms btn-sm-cms">
+                <i class="fa-solid fa-pen me-1"></i>Edit
+              </a>
+              <form th:action="@{'/organizer/conferences/' + ${conf.id} + '/delete'}" method="post" style="display:inline;">
+                <button type="submit" class="btn-danger-cms btn-sm-cms"
+                        data-confirm="Delete this conference?">
+                  <i class="fa-solid fa-trash"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="empty-state fade-up" th:if="${myConferences == null or myConferences.isEmpty()}">
+        <div class="empty-icon">🏛️</div>
+        <h3>No conferences yet</h3>
+        <p>Create your first conference to get started.</p>
+        <a th:href="@{/organizer/conferences/new}" class="btn-primary px-4 py-2 rounded-2 d-inline-block mt-2">
+          <i class="fa-solid fa-plus me-1"></i>Create Conference
+        </a>
+      </div>
+    </div>
+
+    <!-- ============================
+         ADMIN DASHBOARD (redirect hint)
+         ============================ -->
+    <div th:if="${user.role.name() == 'ADMIN'}">
+      <div class="cms-card fade-up">
+        <h3 class="mb-3">Admin Quick Links</h3>
+        <div class="d-flex gap-3 flex-wrap">
+          <a th:href="@{/admin}" class="btn-primary px-4 py-2 rounded-2">
+            <i class="fa-solid fa-shield-halved me-1"></i>Open Admin Panel
+          </a>
+          <a th:href="@{/admin/users}" class="btn-outline-cms">
+            <i class="fa-solid fa-users me-1"></i>Manage Users
+          </a>
+          <a th:href="@{/admin/conferences}" class="btn-outline-cms">
+            <i class="fa-solid fa-calendar-days me-1"></i>Manage Conferences
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>

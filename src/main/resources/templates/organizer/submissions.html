@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Submissions – CMS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+  <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/navbar :: navbar(${user})}"></div>
+
+<div class="page-wrapper">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="mb-3 fade-up" style="color: var(--text-muted); font-size:0.88rem;">
+      <a th:href="@{/dashboard}" style="color: var(--teal);">
+        <i class="fa-solid fa-arrow-left me-1"></i>Dashboard
+      </a>
+    </nav>
+
+    <!-- Flash -->
+    <div th:if="${success}" class="alert-cms alert-success-cms mb-3 fade-up" th:text="${success}"></div>
+    <div th:if="${error}"   class="alert-cms alert-error-cms   mb-3 fade-up" th:text="${error}"></div>
+
+    <div class="section-header fade-up">
+      <h1>Paper Submissions</h1>
+      <p>
+        <span th:text="${submissions.size()}">0</span> submission(s) for
+        <strong th:text="${conference.title}">Conference</strong>
+      </p>
+    </div>
+
+    <!-- Submissions Table -->
+    <div class="cms-card fade-up fade-up-1" th:if="${submissions != null and !submissions.isEmpty()}">
+      <table class="cms-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Paper Title</th>
+            <th>Author</th>
+            <th>Abstract</th>
+            <th>File</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr th:each="sub, stat : ${submissions}">
+            <td style="color: var(--text-muted);" th:text="${stat.count}">1</td>
+            <td style="font-weight:500;" th:text="${sub.title}">Title</td>
+            <td style="color: var(--text-muted);" th:text="${sub.user.name}">Author</td>
+            <td style="color: var(--text-muted); font-size:0.85rem; max-width:180px;"
+                th:text="${sub.abstrakt != null ? #strings.abbreviate(sub.abstrakt, 80) : '—'}">Abstract</td>
+            <td>
+              <a th:if="${sub.filePath != null}"
+                 th:href="@{'/uploads/' + ${sub.filePath}}"
+                 target="_blank"
+                 style="color: var(--teal);">
+                <i class="fa-solid fa-file-pdf"></i> PDF
+              </a>
+              <span th:if="${sub.filePath == null}" style="color: var(--text-muted);">—</span>
+            </td>
+            <td>
+              <span th:class="'badge-status badge-' + ${sub.status.name().toLowerCase()}"
+                    th:text="${sub.status.name()}">PENDING</span>
+            </td>
+            <td>
+              <!-- Review buttons only for PENDING -->
+              <div class="d-flex gap-1" th:if="${sub.status.name() == 'PENDING'}">
+                <form th:action="@{'/organizer/submissions/' + ${sub.id} + '/review'}" method="post" style="display:inline;">
+                  <input type="hidden" name="conferenceId" th:value="${conference.id}"/>
+                  <input type="hidden" name="status" value="APPROVED"/>
+                  <button type="submit" class="btn-outline-cms btn-sm-cms" style="color: var(--teal); border-color: var(--teal);">
+                    <i class="fa-solid fa-check me-1"></i>Approve
+                  </button>
+                </form>
+                <form th:action="@{'/organizer/submissions/' + ${sub.id} + '/review'}" method="post" style="display:inline;">
+                  <input type="hidden" name="conferenceId" th:value="${conference.id}"/>
+                  <input type="hidden" name="status" value="REJECTED"/>
+                  <button type="submit" class="btn-danger-cms btn-sm-cms">
+                    <i class="fa-solid fa-xmark me-1"></i>Reject
+                  </button>
+                </form>
+              </div>
+              <span th:if="${sub.status.name() != 'PENDING'}" style="color: var(--text-muted); font-size:0.85rem;">Reviewed</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="empty-state fade-up" th:if="${submissions == null or submissions.isEmpty()}">
+      <div class="empty-icon">📄</div>
+      <h3>No submissions yet</h3>
+      <p>No papers have been submitted for this conference.</p>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/script.js}"></script>
+</body>
+</html>
